@@ -3,7 +3,7 @@ venv/
 __pycache__/
 *.pyc
 
-# Environment Variables (NEVER UPLOAD THIS)
+# Environment Variables
 .env
 
 # Streamlit

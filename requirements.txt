@@ -1,0 +1,12 @@
+langchain
+langchain-groq
+langchain-community
+langchain-experimental
+langgraph
+llama-parse
+python-dotenv
+pandas
+tabulate
+streamlit
+watchdog
+nest_asyncio

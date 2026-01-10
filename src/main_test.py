@@ -11,11 +11,11 @@ from langchain_core.messages import HumanMessage
 
 def main():
     # Setup Argument Parser to accept --file
-    parser = argparse.ArgumentParser(description="Sprout Construction Sidekick")
+    parser = argparse.ArgumentParser(description="Construction Sidekick")
     parser.add_argument("--file", type=str, required=True, help="Path to the PDF BOM file")
     args = parser.parse_args()
 
-    print("--- Sprout Construction Sidekick (Terminal Mode) ---")
+    print("--- Construction Sidekick (Terminal Mode) ---")
     
     file_path = args.file
     
