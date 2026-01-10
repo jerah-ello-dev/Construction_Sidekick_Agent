@@ -21,7 +21,7 @@ def main():
     
     # Verify file exists
     if not os.path.exists(file_path):
-        print(f"❌ ERROR: File not found at: {file_path}")
+        print(f"ERROR: File not found at: {file_path}")
         return
 
     print(f"Step 1: Ingesting Document: {file_path}")
@@ -30,7 +30,7 @@ def main():
     try:
         context_text = parse_construction_document(file_path)
     except Exception as e:
-        print(f"❌ Parsing Error: {e}")
+        print(f"Parsing Error: {e}")
         return
     
     print("\n--- Document Loaded. Agent is ready. Type 'exit' to quit. ---\n")

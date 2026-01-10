@@ -3,7 +3,6 @@ import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
-# --- FIX: ROBUST ENV LOADING ---
 # Get the current file's directory (src)
 current_dir = Path(__file__).resolve().parent
 # Look for .env in the parent directory (Construction Sidekick Agent)
@@ -21,7 +20,7 @@ if not api_key:
     print("   Please check your .env file exists and has the key.")
     sys.exit(1)
 
-# --- IMPORTS ---
+# IMPORTS
 import pandas as pd
 from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
@@ -31,14 +30,14 @@ from langgraph.graph import StateGraph, END
 from typing import TypedDict, Annotated, List
 import operator
 
-# --- 1. SETUP LLM ---
+# 1. SETUP LLM
 llm = ChatGroq(
     temperature=0, 
     model_name="llama-3.3-70b-versatile",
     api_key=api_key
 )
 
-# --- 2. DEFINE TOOLS ---
+# 2. DEFINE TOOLS
 @tool
 def python_calculator(code: str):
     """
@@ -53,12 +52,12 @@ def python_calculator(code: str):
     except Exception as e:
         return f"Error: {e}"
 
-# --- 3. DEFINE STATE ---
+# 3. DEFINE STATE
 class AgentState(TypedDict):
     messages: Annotated[List[HumanMessage | AIMessage], operator.add]
     context_data: str
 
-# --- 4. DEFINE NODES ---
+# 4. DEFINE NODES
 def agent_reasoning_node(state: AgentState):
     messages = state['messages']
     context = state['context_data']
@@ -93,7 +92,7 @@ def tool_execution_node(state: AgentState):
     
     return {"messages": results}
 
-# --- 5. DEFINE GRAPH ---
+# 5. DEFINE GRAPH
 def router(state: AgentState):
     last_message = state['messages'][-1]
     if last_message.tool_calls:
