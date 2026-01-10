@@ -30,14 +30,14 @@ from langgraph.graph import StateGraph, END
 from typing import TypedDict, Annotated, List
 import operator
 
-# 1. SETUP LLM
+# SETUP LLM
 llm = ChatGroq(
     temperature=0, 
     model_name="llama-3.3-70b-versatile",
     api_key=api_key
 )
 
-# 2. DEFINE TOOLS
+# DEFINE TOOLS
 @tool
 def python_calculator(code: str):
     """
@@ -52,12 +52,12 @@ def python_calculator(code: str):
     except Exception as e:
         return f"Error: {e}"
 
-# 3. DEFINE STATE
+# DEFINE STATE
 class AgentState(TypedDict):
     messages: Annotated[List[HumanMessage | AIMessage], operator.add]
     context_data: str
 
-# 4. DEFINE NODES
+# DEFINE NODES
 def agent_reasoning_node(state: AgentState):
     messages = state['messages']
     context = state['context_data']
@@ -92,7 +92,7 @@ def tool_execution_node(state: AgentState):
     
     return {"messages": results}
 
-# 5. DEFINE GRAPH
+# DEFINE GRAPH
 def router(state: AgentState):
     last_message = state['messages'][-1]
     if last_message.tool_calls:
