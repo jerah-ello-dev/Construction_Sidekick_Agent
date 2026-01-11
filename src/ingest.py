@@ -15,18 +15,23 @@ def parse_construction_document(file_path):
     It specifically instructs the model to look for BOM/BOQ structures.
     """
     print(f"--- Parsing document: {file_path} ---")
+
+    llama_key = os.getenv("LLAMA_CLOUD_API_KEY")
+    if not llama_key:
+        raise ValueError(" Error: LLAMA_CLOUD_API_KEY is missing from .env file")
     
+    # Initialize Parser
     parser = LlamaParse(
+        api_key=llama_key,
         result_type="markdown",
         verbose=True,
         language="en",
-        # This instruction is critical for the "invisible lines" requirement
+        # This is the universal instruction
         parsing_instruction=(
-            "This is a Construction Bill of Materials (BOM) or Bill of Quantities (BOQ). "
-            "Extract all tabular data into valid Markdown tables. "
-            "If gridlines are missing, infer columns based on text alignment. "
-            "Ensure 'Description', 'Quantity', 'Unit', and 'Amount' columns are preserved. "
-            "Capture section headers (like 'Ground Floor', 'Second Floor') clearly."
+            "Extract all text from this construction document.\n"
+            "1. PRESERVE STRUCTURE: Keep all Article numbers (e.g., 'Article 8'), Section numbers (e.g., '8.1'), and Page numbers.\n"
+            "2. DO NOT SUMMARIZE: Keep the legal text exactly as written.\n"
+            "3. TABLES: Convert any BOM/BOQ tables into Markdown format with columns for Item, Description, Qty, Unit, and Amount.\n"
         )
     )
 
