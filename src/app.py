@@ -25,6 +25,9 @@ def main():
     with st.sidebar:
         st.header("Project Documents")
         uploaded_file = st.file_uploader("Upload BOM/BOQ (PDF)", type=["pdf"])
+
+        st.divider()
+        show_debug = st.toggle("Show Raw Parsed Data")
         
         # Reset button
         if st.button("Clear Chat Memory"):
@@ -51,6 +54,11 @@ def main():
                 # Run the ingestion
                 text_content = parse_construction_document(tmp_path)
                 st.session_state.context = text_content
+
+                if show_debug and st.session_state.context:
+                    with st.expander("DEBUG: What the Agent Sees (Raw Markdown)", expanded=True):
+                        st.code(st.session_state.context, language='markdown')
+
                 st.success("Document processed! You can now ask questions.")
             except Exception as e:
                 st.error(f"Error parsing document: {e}")
